@@ -44,12 +44,18 @@ class NewBill(webapp2.RequestHandler):
         date = str(self.request.get("bDate"))
         repeat = self.request.get("bRep")  # IDEA: If curdate is after the bDate, incr by repeat
         amount = self.request.get("bAmt")
-        amount = float(amount)
+        stramount = str(amount)
+        fltamount = float(stramount)
+        # print type(amount)
+        # print type(stramount)
+        # print type(fltamount)
+        # print fltamount
+        # FIXME: when uploaded to appspot, throws error cannot convert string to float, but saves to datastore anyway
 
         date = time.strptime(date, "%Y-%m-%d")
 
         finDate = datetime.date(year=date.tm_year, month=date.tm_mon, day=date.tm_mday)
-        newBill = Bill(bName=name, bDate=finDate, bRepeat=repeat, bAmount=amount)
+        newBill = Bill(bName=name, bDate=finDate, bRepeat=repeat, bAmount=fltamount)
         newBill.put()
         # TODO: Maybe check to see if bill name is taken, tho not indexed
 
