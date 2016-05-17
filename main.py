@@ -43,7 +43,8 @@ class NewBill(webapp2.RequestHandler):
         name = self.request.get("bName")
         date = str(self.request.get("bDate"))
         repeat = self.request.get("bRep")  # IDEA: If curdate is after the bDate, incr by repeat
-        amount = float(self.request.get("bAmt"))
+        amount = self.request.get("bAmt")
+        amount = float(amount)
 
         date = time.strptime(date, "%Y-%m-%d")
 
