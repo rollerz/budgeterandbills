@@ -46,11 +46,8 @@ class NewBill(webapp2.RequestHandler):
         amount = self.request.get("bAmt")
         stramount = str(amount)
         fltamount = float(stramount)
-        # print type(amount)
-        # print type(stramount)
-        # print type(fltamount)
-        # print fltamount
-        # FIXME: when uploaded to appspot, throws error cannot convert string to float, but saves to datastore anyway
+        # FIXME: when uploaded to appspot, throws error cannot convert string to float
+        # FIXME: but saves to datastore anyway
 
         date = time.strptime(date, "%Y-%m-%d")
 
@@ -87,6 +84,6 @@ class MainHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/newBill', NewBill),
     ('/update', Update),
-    ('#/bills', ListBills),
+    ('/bills', ListBills),
     ('/', MainHandler)
 ], debug=True)
