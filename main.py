@@ -63,13 +63,19 @@ class NewBill(webapp2.RequestHandler):
             'bill': newBill
         }
 
-        template = JINJA_ENVIRONMENT.get_template('success-temp.html')
+        template = JINJA_ENVIRONMENT.get_template('temp/success-temp.html')
         self.response.write(template.render(template_values))
 
 
 class Update(webapp2.RequestHandler):
+    def post(self):
+        template = JINJA_ENVIRONMENT.get_template('temp/success-temp.html')
+        self.response.write(template.render())
+
+
+class ListBills(webapp2.RequestHandler):
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template('update.html')
+        template = JINJA_ENVIRONMENT.get_template('temp/bills.html')
         self.response.write(template.render())
 
 
@@ -81,5 +87,6 @@ class MainHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/newBill', NewBill),
     ('/update', Update),
+    ('#/bills', ListBills),
     ('/', MainHandler)
 ], debug=True)
