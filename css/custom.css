@@ -1,0 +1,71 @@
+body {
+    padding-top: 40px;
+    background-color: ghostwhite;
+}
+@media (min-width: 980px) {
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+    }
+}
+@media (max-width: 979px) {
+    body {
+        padding-bottom: 90px;
+    }
+    #portrait {
+        width: 22em;
+    }
+    #aboutDesc {
+        padding-top: 7px;
+        font-size: 16px;
+    }
+    .dropdown: {
+        display: block;
+        margin-top: 0;
+    }
+}
+p {
+    font-size: 16px;
+}
+.moreDesc {
+    font-size: 11px;
+}
+.jumbotron {
+    margin-top: 3em;
+    color: white;
+    /*background: url(../images/codebg.png);*/
+    background-position: 0% 82.75%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.jumbotron h1, .jumbotron h3 {
+    text-shadow: slategray 0.10em 0.10em 0.10em;
+}
+.navbar-text > a {
+    text-decoration: none;
+    color: inherit;
+}
+.navbar-text > a:hover {
+    text-decoration: none;
+    color: green;
+}
+.list li {
+    list-style-type: square;
+    margin-left: -25px;
+}
+.content {
+    margin-top: 5em;
+}
+#banner img {
+    width: 100%;
+}
+#aboutTitle {
+    font-size: 4em;
+}
+#portContainer {
+    text-align: center;
+}
+#portrait {
+    width: 23em;
+    padding-top: 1.5em;
+}
