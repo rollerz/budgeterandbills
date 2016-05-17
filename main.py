@@ -70,7 +70,7 @@ class MainHandler(webapp2.RequestHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render())
-# IDEA: Use webapp2 to load jinja2 templates from routeparams?
+# IDEA: Use webapp2 to load jinja2 templates from routeparams? ('#/bills', ListBills)?
 app = webapp2.WSGIApplication([
     ('/newBill', NewBill),
     ('/update', Update),
