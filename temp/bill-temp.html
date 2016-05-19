@@ -9,13 +9,13 @@
             <h4>Due every {{bill.bRepeat}}</h4>
         {% endif %}<br />
         {% if bill.bPaid %}
-            <h4>Was paid on {{bill.bPayDate.strftime('%A, %m/%d/%Y')}}</h4>
+            <h4>Was paid on {{bill.bPayDate.strftime('%A, %B %d %Y')}}</h4>
         {% else %}
             <h4>Has not been paid yet!</h4>
             <form class="bills" action="/pay/{{bill.key.id()}}" method="post">
                 <input class="payBtn" type="submit"  value="Pay?"/>
             </form>
-            <h4>Due: {{bill.bDate.strftime('%A, %m-%d-%Y') }}</h4>
+            <h4>Due: {{bill.bDate.strftime('%A, %B %d %Y') }}</h4>
         {% endif %}
     </div>
     {% include 'temp/footer.html' %}

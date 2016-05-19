@@ -21,9 +21,6 @@ import os
 import time
 from dateutil import relativedelta
 import datetime
-from pytz import timezone
-import pytz
-from tzlocal import get_localzone
 import tzlocal
 import models
 from google.appengine.ext import ndb
@@ -98,24 +95,24 @@ class Update(webapp2.RequestHandler):
         if add:
             user.accAmount = user.accAmount + float(add)
             user.put()
-            template_values.update({'succ': 'add', 'num': add, 'bList': Bill.query(Bill.bUser == user.uName).fetch()})
+            template_values.update({'succ': 'add', 'num': float(add)})
         if rem:
             if user.accAmount > float(rem):
                 user.accAmount = user.accAmount - float(rem)
                 user.put()
-                template_values.update({'succ': 'rem', 'num': rem})
+                template_values.update({'succ': 'rem', 'num': float(rem)})
             else:
-                template_values.update({'error': 'fundFail', 'num': rem})
+                template_values.update({'error': 'fundFail', 'num': float(rem)})
         if cha:
             user.accAmount = float(cha)
             user.put()
-            template_values.update({'succ': 'cha', 'num': cha})
+            template_values.update({'succ': 'cha', 'num': float(cha)})
         if init:
             user.accAmount = float(init)
             user.put()
-            template_values.update({'succ': 'init', 'num': init})
+            template_values.update({'succ': 'init', 'num': float(init)})
 
-        # updated bill list
+        # unpaid bill list
         bList = Bill.query(Bill.bUser == self.request.cookies.get('uName')).fetch()
         unpaid = []
 
@@ -153,7 +150,6 @@ class PayBill(webapp2.RequestHandler):
     def post(self, para):
         curBill = Bill.get_by_id(int(para))
         user = User.query(User.uName == self.request.cookies.get('uName')).fetch()[0]
-        bList = Bill.query(Bill.bUser == self.request.cookies.get('uName')).fetch()
 
         if user.accAmount < curBill.bAmount:
             template_values = {
@@ -190,6 +186,7 @@ class PayBill(webapp2.RequestHandler):
                 template_values.update({'next': nextBill})
 
         # updated bill list
+        bList = Bill.query(Bill.bUser == self.request.cookies.get('uName')).fetch()
         unpaid = []
 
         for b in bList:
@@ -218,21 +215,14 @@ class Register(webapp2.RequestHandler):
         userCheck = False
         template_values = {}
 
-        if raw_password != confirm or len(raw_password) <= 7:
-            if len(raw_password) <= 7:
-                template_values.update({'user': uName, 'error': 'lenFail'})
-            else:
-                template_values.update({'user': uName, 'error': 'confFail'})
-
-        else:  # if passwords match, then if user already exists
-            if len(User.query(User.uName == uName).fetch(1)) == 0:
-                self.response.set_cookie('uName', uName, path="/")
-                newUser = User(uName=uName, password=raw_password)
-                newUser.put()
-                template_values.update({'user': newUser, 'succ': 'uReg'})
-                userCheck = True
-            else:
-                template_values.update({'user': uName, 'error': 'uDup'})
+        if len(User.query(User.uName == uName).fetch(1)) == 0:  # if no user
+            self.response.set_cookie('uName', uName, path="/")
+            newUser = User(uName=uName, password=raw_password)
+            newUser.put()
+            template_values.update({'user': newUser, 'succ': 'uReg', 'curUser': self.request.cookies.get('uName')})
+            userCheck = True
+        else:
+            template_values.update({'userFail': uName, 'error': 'uDup'})
 
         if userCheck:
             template = JINJA_ENVIRONMENT.get_template('temp/account-temp.html')
@@ -256,7 +246,6 @@ class Login(webapp2.RequestHandler):
         attUser = None
         template_values = {}
         login = False
-        passFail = False
 
         try:
             attUser = User.query(User.uName == uName).fetch()[0]
@@ -264,13 +253,15 @@ class Login(webapp2.RequestHandler):
         except IndexError:
             if not User.query().fetch():
                 template_values.update({'error': 'noUsers'})
+                passFail = True
             else:
                 template_values.update({'userFail': uName, 'error': 'uNotFound'})
+                passFail = True
 
         else:
             if attUser and attUser.password == password:  # success
                 self.response.set_cookie('uName', uName, path="/")
-                template_values.update({'user': attUser, 'succ': 'login', 'curUser': self.request.cookies.get('uName')})
+                template_values.update({'user': attUser, 'succ': 'login', 'curUser': attUser.uName})
                 login = True
 
             else:  # fail
@@ -347,6 +338,7 @@ class MainHandler(webapp2.RequestHandler):
             template_values.update({'user': User.query(User.uName == self.request.cookies.get('uName')).fetch()[0]})
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
+
 
 app = webapp2.WSGIApplication([
     ('/newbill', NewBill),

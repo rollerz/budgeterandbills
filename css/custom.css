@@ -5,6 +5,9 @@ body {
 p {
     font-size: 16px;
 }
+#billHist {
+    padding-bottom: 100px;
+}
 .moreDesc {
     font-size: 11px;
 }

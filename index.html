@@ -35,31 +35,41 @@
                     {% endif %}
                 </div>
             {% else %}
-            <h1>Welcome!</h1>
-                <div  ng-app="" ng-cloak>
-                    <input type="hidden" ng-init="switch = 'log'">
-                    <form id="log" ng-show="switch == 'log'" action="/login" method="post">
-                        <label for="loginUser" class="boxLabel"> Username:</label>
-                            <input type="text" id="loginUser" name="loginUser"/><br>
-                        <label for="loginPass" class="boxLabel"> Password:</label>
-                            <input type="password" id="loginPass" name="loginPass"/><br>
-                        <input type="submit" value="Login">
-                        {% if error == 'passFail' %}
-                            <span class="warning">Incorrect password for {{userFail}}!</span>
-                        {% endif %}
-                    </form>
-                    <h4 ng-show="switch == 'log'">Don't have an account? <a href="" ng-click="switch = {'log': 'reg', 'reg':'log'}[switch]">Click here!</a></h4>
-                    <form  id="reg" ng-show="switch == 'reg'" action="/reg" method="post" name="register">
-                        <label for="user"> Username:</label>
-                            <input type="text" name="user" id="user" required/><br>
-                        <label for="pass"> Password:</label>
-                            <input type="password" name="pass" id="pass" required/><br>
-                        <label for="conf"> Confirm Password:</label>
-                            <input type="password" name="conf" id="conf" required/><br>
-                        <input type="submit" value="Register"/>
-                    </form>
-                    <h4 ng-show="switch == 'reg'">Already have an account? <a href="" ng-click="switch = {'log': 'reg', 'reg':'log'}[switch]">Click here!</a></h4>
-                    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+            {% if error == "noUsers" %}
+                <h2 class="warning">No users found!</h2>
+                <h4>Please register for an account below.</h4>
+            {% endif %}
+            {% if error == "uNotFound" %}
+                <h2 class="warning">{{ userFail }} has not been logged in!</h2>
+                <h4>User not found! Please register for an account below.</h4>
+            {% endif %}
+                <div class="col-sm-offset-4">
+                    <h1>Welcome!</h1>
+                        <div ng-app="" ng-cloak>
+                            <input type="hidden" ng-init="switch = 'log'">
+                            <form id="log" ng-show="switch == 'log'" action="/login" method="post">
+                                <label for="loginUser" class="boxLabel"> Username:</label>
+                                    <input type="text" id="loginUser" name="loginUser"/><br>
+                                <label for="loginPass" class="boxLabel"> Password:</label>
+                                    <input type="password" id="loginPass" name="loginPass"/><br>
+                                <input type="submit" value="Login">
+                                {% if error == 'passFail' %}
+                                    <span class="warning">Incorrect password for {{userFail}}!</span>
+                                {% endif %}
+                            </form>
+                            <h4 ng-show="switch == 'log'">Don't have an account? <a href="" ng-click="switch = {'log': 'reg', 'reg':'log'}[switch]">Click here!</a></h4>
+                            <form  id="reg" ng-show="switch == 'reg'" action="/reg" method="post" name="register">
+                                <label for="user"> Username:</label>
+                                    <input type="text" name="user" id="user" required/><br>
+                                <label for="pass"> Password:</label>
+                                    <input type="password" name="pass" id="pass" required/><br>
+                                <label for="conf"> Confirm Password:</label>
+                                    <input type="password" name="conf" id="conf" required/><br>
+                                <input type="submit" value="Register"/>
+                            </form>
+                            <h4 ng-show="switch == 'reg'">Already have an account? <a href="" ng-click="switch = {'log': 'reg', 'reg':'log'}[switch]">Click here!</a></h4>
+                            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+                        </div>
                 </div>
             {% endif %}
         </div>

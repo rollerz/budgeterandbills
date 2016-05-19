@@ -1,7 +1,7 @@
 {% include 'temp/head.html'%}
     {% include 'temp/header.html' %}
-    <div class="content container">
-        <h1>All {{curUser}}'s Bills</h1>
+    <div id="billHist" class="content container">
+        <h1>{{curUser}}'s Billing History</h1>
         {% if bList %}
             {% for b in bList %}
                 <h4>Bill {{loop.index}}: <a href="/bill/{{b.key.id()}}">{{b.bName}}</a><br /></h4>
