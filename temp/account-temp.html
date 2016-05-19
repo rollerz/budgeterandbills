@@ -1,0 +1,59 @@
+{% include 'temp/head-broken.html' %}
+    {% include 'temp/header.html' %}
+    <div class="container content">
+        <div class="center">
+            <h1>{{curUser}}</h1>
+            {% if error == 'fundFail'%}
+                <h4 class="warning">Insufficient funds to remove ${{num}}!</h4>
+            {% endif %}
+            {% if error == 'insFail'%}
+                <h4 class="warning">Insufficient funds to pay bill!</h4>
+            {% endif %}
+            {% if succ == 'add' %}
+                <h4 class="success">${{num}} added to your account!</h4>
+            {% endif %}
+            {% if succ == 'rem' %}
+                <h4 class="success">${{num}} removed from your account!</h4>
+            {% endif %}
+            {% if succ == 'cha' %}
+                <h4 class="success">Changed account balance to ${{num}}</h4>
+            {% endif %}
+            {% if succ == 'init' %}
+                <h4 class="success">Congratulations! You start your account with ${{num}}</h4>
+            {% endif %}
+            {% if succ == 'login' %}
+                <h4 class="success">You have been logged in!</h4>
+            {% endif %}
+            {% if billPaid %}
+                <h4 class="success">{{billPaid.bName}} has been paid!</h4>
+                {% if next %}
+                    <h5 class="warning">Your next {{next.bName}} bill is due on {{next.bDate}}.</h5>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-md-offset-1">
+            <div class="col-sm-6">
+                <h3>
+                    {% if user.accAmount %}
+                        Money in Your Account: {{'${:.2f}'.format(user.accAmount)}}
+                    {% else %}
+                        You have no money! <a href="update">Go add some!</a>
+                    {% endif %}
+                </h3>
+            </div>
+            <div class="col-sm-6">
+                {% if bList %}
+                    <h2>Unpaid Bills</h2>
+                {% for b in bList %}
+                    <form class="bills" action="/pay/{{b.key.id()}}" method="post">
+                        <a href="/bill/{{b.key.id()}}">{{b.bName}}</a><input class="payBtn" type="submit"  value="Pay?"/>
+                    </form>
+                {% endfor %}
+                {% else %}
+                    <h3>You have no unpaid bills! :)</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% include 'temp/footer.html' %}
+{% include 'temp/end.html' %}

@@ -1,44 +1,53 @@
-<div class="col-md-offset-2">
-    <div class="col-sm-6">
-        <form ng-submit="billSubmit()" action="/newBill" method="post">
-            <h1>Add New Bill</h1>
-            Bill Name: &nbsp;
-            <input type="text" ng-model="bName" name="bName"/><br/><br/>
-            Next Bill Date:
-            <input type="date" ng-model="bDate" name="bDate"/><br/><br/>
-            Repeat: &nbsp;
-            <select ng-model="bRepeat" name="bRep">
-                <option>Pick</option>
-                <option value="never">Never</option>
-                <option value="week">Weekly</option>
-                <option value="month">Monthly</option>
-                <option value="yearly">Yearly</option>
-                <option value="other">Other</option>
-            </select><br/><br/>
-            <!-- IDEA: Use angular "if other, load new data inputs for it" -->
-            <!-- IDEA: "Every:" text > select{days, months, years} -->
-            Bill Amount: &nbsp;
-            <input ng-model="bAmt" type="text" name="bAmt"/><br/><br/>
-            <!-- IDEA: Tooltips -->
-            <span name="bDateFilter" style="display:none;">{a bDate | date: "dd/MM/yyyy" a}</span>
-            <input type="submit"/>
-        </form>
-    </div>
-    <div class="col-sm-6">
-        <h1>Bill Preview</h1>
-        <div class="col-sm-offset-1">
-            <h4>{a bName a}</h4>
-            <h4>
-                {a bDate | date: "EEEE, MM/dd/yyyy" a}
-            </h4>
-            <h4>
-                <span ng-if="bRepeat == 'month' || bRepeat == 'week' || bRepeat == 'year'">Due every {a bRepeat a}</span>
-                <span ng-if="bRepeat == 'never'">One-time Bill</span>
-                <span ng-if="bRepeat == 'other'">We'll figure this out later ;)</span>
-            </h4>
-            <div ng-if="bAmt != null">
-                <h4>${a bAmt a}</h4>
+{% include 'temp/head.html'%}
+    {% include 'temp/header.html' %}
+    <div class="content container" ng-app="billApp" ng-cloak>
+        <div class="col-md-offset-1">
+            <div class="col-sm-8">
+                <form id="new" action="/newbill" method="post">
+                    <h1>Add New Bill</h1>
+                    <label for="bName">Bill Name: &nbsp;</label>
+                        <input type="text" id="bName" ng-model="bName" name="bName"/><br/><br/>
+                    <label for="bDate">Bill Due Date:</label>
+                        <input type="date" id="bDate" ng-model="bDate" name="bDate"/><br/><br/>
+                    <label for="bRep">Repeat: &nbsp;</label>
+                        <select id="bRep" ng-model="bRepeat" name="bRep">
+                            <option value=""></option>
+                            <option value="never">Never</option>
+                            <option value="week">Weekly</option>
+                            <option value="month">Monthly</option>
+                            <option value="year">Yearly</option>
+                        </select><br/><br/>
+                    <label for="bAmt">Bill Amount: &nbsp;</label>
+                        <input type="text" id="bAmt" ng-model="bAmt"  name="bAmt"/><br/><br/>
+                    <input type="submit"/>
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <h1>Bill Preview</h1>
+                <div class="col-sm-offset-1">
+                    <h4>{a bName a}</h4>
+                    <h4>
+                        {a bDate | date: "EEEE, MM/dd/yyyy" a}
+                    </h4>
+                    <h4>
+                        <span ng-if="bRepeat == 'month' || bRepeat == 'week' || bRepeat == 'year'">Due every {a bRepeat a}</span>
+                        <span ng-if="bRepeat == 'never'">One-time Bill</span>
+                        <span ng-if="bRepeat == 'other'">We'll figure this out later ;)</span>
+                    </h4>
+                    <div ng-if="bAmt != null">
+                        <h4>${a bAmt a}</h4>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script>
+        var billApp = angular.module('billApp', []);
+        billApp.config(['$interpolateProvider', function($interpolateProvider) {
+          $interpolateProvider.startSymbol('{a');
+          $interpolateProvider.endSymbol('a}');
+        }]);
+    </script>
+    {% include 'temp/footer.html' %}
+{% include 'temp/end.html' %}

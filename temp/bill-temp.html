@@ -1,2 +1,22 @@
-<h4 style="color: red;">This page is a prototype!</h4>
-<h1>You've got bill!</h1>
+{% include 'temp/head-broken.html'%}
+    {% include 'temp/header.html' %}
+    <div class="content container">
+        <h1>{{bill.bName}}</h1>
+        <h3>{{'${:.2f}'.format(bill.bAmount)}}</h3>
+        {% if bill.bRepeat == 'never'%}
+            <h4>One-time Bill</h4>
+        {% else %}
+            <h4>Due every {{bill.bRepeat}}</h4>
+        {% endif %}<br />
+        {% if bill.bPaid %}
+            <h4>Was paid on {{bill.bPayDate.strftime('%A, %m/%d/%Y')}}</h4>
+        {% else %}
+            <h4>Has not been paid yet!</h4>
+            <form class="bills" action="/pay/{{bill.key.id()}}" method="post">
+                <input class="payBtn" type="submit"  value="Pay?"/>
+            </form>
+            <h4>Due: {{bill.bDate.strftime('%A, %m-%d-%Y') }}</h4>
+        {% endif %}
+    </div>
+    {% include 'temp/footer.html' %}
+{% include 'temp/end.html' %}

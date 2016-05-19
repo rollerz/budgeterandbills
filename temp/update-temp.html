@@ -1,12 +1,49 @@
-<div class="col-sm-6 col-md-offset-4">
-    <h4 style="color: red;">This page is a prototype!</h4>
-    <form action="/upd" method="post">
-        <h1>Update Your Account</h1><br />
-        Add Money: <input type="text" name="uAdd" /><br /><br />
-        *OR*<br /><br />
-        Remove Money: <input type="text" name="uRem" /><br /><br />
-        *OR*<br /><br />
-        Change Amount: <input type="text" name="uCha" /><br /><br />
-        <input type="submit" />
-    </form>
-</div>
+{% include 'temp/head.html'%}
+    {% include 'temp/header.html' %}
+    <div class="content container" ng-app="billApp" ng-controller="ClearCtrl" ng-cloak>
+        <div class="col-sm-6 col-md-offset-4">
+            <form id="upd" action="/update" method="post">
+                <h1>Update Your Account</h1><br />
+                {% if error == 'fundFail' %}
+                    <h3 class="warning">You not have sufficient funds to remove that amount! Try a lesser number!</h3>
+                {% endif %}
+                {% if user.accAmount > 0 %}
+                <label>
+                    <input type="radio" ng-model="changer" ng-click="clear()" ng-checked="true" name="changer" value="add">
+                    Add &nbsp;
+                </label>
+                <label>
+                    <input type="radio" ng-model="changer" ng-click="clear()" name="changer" value="rem">
+                    Remove &nbsp;
+                </label>
+                <label>
+                    <input type="radio" ng-model="changer" ng-click="clear()" name="changer" value="cha">
+                    Change &nbsp;
+                </label><br/>
+                    <div ng-show="changer == 'add' || changer == null">
+                        Add Money: <input class="inp" type="text" name="uAdd" /><br /><br />
+                    </div>
+                    <div ng-show="changer == 'rem'">
+                        Remove Money: <input class="inp" type="text" name="uRem" /><br /><br />
+                    </div>
+                    <div ng-show="changer == 'cha'">
+                        Change Amount: <input class="inp" type="text" name="uCha" /><br /><br />
+                    </div>
+                {% else %}
+                    Initialize Money: <input class="inp" type="text" name="uInit" /><br /><br />
+                {% endif %}
+                <input type="submit" />
+            </form>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script>
+        var billApp = angular.module('billApp', []);
+        billApp.controller('ClearCtrl', function($scope) {
+            $scope.clear = function () {
+                $('.inp').val('');
+            }
+        });
+    </script>
+    {% include 'temp/footer.html' %}
+{% include 'temp/end.html' %}

@@ -1,34 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Budgeter and Bill Reminder</title>
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Font Awesome  -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
-    <!-- Custom -->
-    <link href="css/custom.css" rel="stylesheet" />
-</head>
-<body ng-app="billApp">
-    <div ng-include="'temp/header.html'"></div>
-    <div class="content container" ng-view>
-        <!--XXX Angular sends templates here XXX-->
+{% include 'temp/head.html' %}
+    {% include 'temp/header.html' %}
+    <div class="container content">
+        <div class="col-sm-offset-1">
+            {% if user %}
+                <div class="col-sm-6">
+                    <h1>Hello {{user.uName}}!</h1>
+                    {% if user.accAmount %}
+                        <h3>You have <span class="success">{{'${:.2f}'.format(user.accAmount)}}</span> in your account!</h3>
+                    {% else %}
+                        You have no money! <a href="update">Go add some!</a>
+                    {% endif %}
+                </div>
+                <div class="col-sm-6">
+                    {% if upcoming|length == 0 %}
+                        <h2>You have no upcoming bills! :)</h2>
+                    {% else %}
+                        {% if upcoming|length == 1 %}
+                            <h2>Your have {{upcoming|length}} upcoming bill:</h2>
+                        {% else %}
+                            <h2>Your have {{upcoming|length}} upcoming bills:</h2>
+                        {% endif %}
+                        <ul>
+                            {% for b in upcoming %}
+                                <li><a href="/bill/{{b.key.id()}}">{{b.bName}}</a> is due
+                                    {% if b.bDate == today %}
+                                        <span class="warning">TODAY</span>
+                                    {% else %}
+                                        on {{b.bDate.strftime('%A, %m/%d/%Y')}}
+                                    {% endif %}
+                                    for {{'${:.2f}'.format(b.bAmount)}}</li>
+                            {% endfor %}
+                        </ul>
+                        <h3>You will have {{'${:.2f}'.format(user.accAmount - sum)}} after these are paid.</h3>
+                    {% endif %}
+                </div>
+            {% else %}
+            <h1>Welcome!</h1>
+                <div  ng-app="" ng-cloak>
+                    <input type="hidden" ng-init="switch = 'log'">
+                    <form id="log" ng-show="switch == 'log'" action="/login" method="post">
+                        <label for="loginUser" class="boxLabel"> Username:</label>
+                            <input type="text" id="loginUser" name="loginUser"/><br>
+                        <label for="loginPass" class="boxLabel"> Password:</label>
+                            <input type="password" id="loginPass" name="loginPass"/><br>
+                        <input type="submit" value="Login">
+                        {% if error == 'passFail' %}
+                            <span class="warning">Incorrect password for {{userFail}}!</span>
+                        {% endif %}
+                    </form>
+                    <h4 ng-show="switch == 'log'">Don't have an account? <a href="" ng-click="switch = {'log': 'reg', 'reg':'log'}[switch]">Click here!</a></h4>
+                    <form  id="reg" ng-show="switch == 'reg'" action="/reg" method="post" name="register">
+                        <label for="user"> Username:</label>
+                            <input type="text" name="user" id="user" required/><br>
+                        <label for="pass"> Password:</label>
+                            <input type="password" name="pass" id="pass" required/><br>
+                        <label for="conf"> Confirm Password:</label>
+                            <input type="password" name="conf" id="conf" required/><br>
+                        <input type="submit" value="Register"/>
+                    </form>
+                    <h4 ng-show="switch == 'reg'">Already have an account? <a href="" ng-click="switch = {'log': 'reg', 'reg':'log'}[switch]">Click here!</a></h4>
+                    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+                </div>
+            {% endif %}
+        </div>
     </div>
-    <div ng-include="'temp/footer.html'"></div>
-    <!-- Any other plugins -->
-
-    <!-- Bootstrap -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- angularJS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.js"></script>
-    <!-- Custom -->
-    <script src="js/custom.js"></script>
-    <script src="js/billApp.js"></script>
-</body>
-</html>
+    {% include 'temp/footer.html' %}
+{% include 'temp/end.html' %}

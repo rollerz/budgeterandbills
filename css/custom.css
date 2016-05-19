@@ -2,6 +2,54 @@ body {
     padding-top: 40px;
     background-color: ghostwhite;
 }
+p {
+    font-size: 16px;
+}
+.moreDesc {
+    font-size: 11px;
+}
+.navbar-text > a {
+    text-decoration: none;
+    color: inherit;
+}
+.navbar-text > a:hover {
+    text-decoration: none;
+    color: green;
+}
+.list li {
+    list-style-type: square;
+    margin-left: -25px;
+}
+.content {
+    margin-top: 5em;
+}
+.user {
+    color: white;
+}
+.warning, div.error, span.error {
+    color: red;
+    font-weight: bold;
+}
+span.error {
+    padding-left: 10px;
+}
+.success {
+    color: green;
+}
+.center {
+    text-align: center;
+}
+.bills {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 15px;
+}
+.payBtn {
+    margin-left: 25px;
+}
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
 @media (min-width: 980px) {
     .dropdown:hover .dropdown-menu {
         display: block;
@@ -23,49 +71,4 @@ body {
         display: block;
         margin-top: 0;
     }
-}
-p {
-    font-size: 16px;
-}
-.moreDesc {
-    font-size: 11px;
-}
-.jumbotron {
-    margin-top: 3em;
-    color: white;
-    /*background: url(../images/codebg.png);*/
-    background-position: 0% 82.75%;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-.jumbotron h1, .jumbotron h3 {
-    text-shadow: slategray 0.10em 0.10em 0.10em;
-}
-.navbar-text > a {
-    text-decoration: none;
-    color: inherit;
-}
-.navbar-text > a:hover {
-    text-decoration: none;
-    color: green;
-}
-.list li {
-    list-style-type: square;
-    margin-left: -25px;
-}
-.content {
-    margin-top: 5em;
-}
-#banner img {
-    width: 100%;
-}
-#aboutTitle {
-    font-size: 4em;
-}
-#portContainer {
-    text-align: center;
-}
-#portrait {
-    width: 23em;
-    padding-top: 1.5em;
 }

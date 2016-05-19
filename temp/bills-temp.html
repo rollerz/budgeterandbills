@@ -1,4 +1,14 @@
-{% include 'temp/header.html' %}
-<h4 style="color: red;">This page is a prototype!</h4>
-<h1>Hello Bills!</h1>
-{% include 'temp/footer.html' %}
+{% include 'temp/head.html'%}
+    {% include 'temp/header.html' %}
+    <div class="content container">
+        <h1>All {{curUser}}'s Bills</h1>
+        {% if bList %}
+            {% for b in bList %}
+                <h4>Bill {{loop.index}}: <a href="/bill/{{b.key.id()}}">{{b.bName}}</a><br /></h4>
+            {% endfor %}
+        {% else %}
+            <h3>No bills found!</h3>
+        {% endif %}
+    </div>
+    {% include 'temp/footer.html' %}
+{% include 'temp/end.html' %}
