@@ -10,6 +10,7 @@
         {% endif %}<br />
         {% if bill.bPaid %}
             <h4>Was paid on {{bill.bPayDate.strftime('%A, %B %d %Y')}}</h4>
+            <h4>Due: {{bill.bDate.strftime('%A, %B %d %Y') }}</h4>
         {% else %}
             <h4>Has not been paid yet!</h4>
             <form class="bills" action="/pay/{{bill.key.id()}}" method="post">

@@ -316,7 +316,7 @@ class MainHandler(webapp2.RequestHandler):
         bList = Bill.query(Bill.bUser == self.request.cookies.get('uName')).fetch()
         upcBills = []
         upcTotal = 0
-
+        print today.date()
         # FIXME: no matter what happens, I cannot get the actual local time. its totally borked
         # print "the tz is "
         # print timezone('US/Central')
@@ -332,7 +332,8 @@ class MainHandler(webapp2.RequestHandler):
             'curUser': self.request.cookies.get('uName'),
             'upcoming': upcBills,
             'sum': upcTotal,
-            'today': today.date()
+            'today': today.date(),
+            'happy': datetime.datetime(2016, 5, 19, 0, 0, 0).date()
         }
         if self.request.cookies.get('uName'):
             template_values.update({'user': User.query(User.uName == self.request.cookies.get('uName')).fetch()[0]})

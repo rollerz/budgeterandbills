@@ -3,9 +3,22 @@
     <div id="billHist" class="content container">
         <h1>{{curUser}}'s Billing History</h1>
         {% if bList %}
-            {% for b in bList %}
-                <h4>Bill {{loop.index}}: <a href="/bill/{{b.key.id()}}">{{b.bName}}</a><br /></h4>
-            {% endfor %}
+            <div class="col-sm-6">
+                <h2>Paid</h2>
+                {% for b in bList %}
+                    {% if b.bPaid %}
+                        <h4><a href="/bill/{{b.key.id()}}">{{b.bName}}</a><br />&nbsp; Paid: {{b.bPayDate.strftime('%B %d %Y')}}</h4>
+                    {% endif%}
+                {% endfor %}
+            </div>
+            <div class="col-sm-6">
+                <h2>Unpaid</h2>
+                {% for b in bList %}
+                    {% if not b.bPaid %}
+                        <h4><a href="/bill/{{b.key.id()}}">{{b.bName}}</a><br />&nbsp;  Due: {{b.bDate.strftime('%B %d %Y')}}</h4>
+                    {% endif%}
+                {% endfor %}
+            </div>
         {% else %}
             <h3>No bills found!</h3>
         {% endif %}

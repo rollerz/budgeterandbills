@@ -4,7 +4,12 @@
         <div class="col-sm-offset-1">
             {% if user %}
                 <div class="col-sm-6">
-                    <h1>Hello {{user.uName}}!</h1>
+                    {% if user.uName == 'Keith' and  today == happy %}
+                        <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+                        <h1>Happy Birthday {{user.uName}}!&nbsp;<i class="em em-birthday"></i></h1>
+                    {% else %}
+                        <h1>Hello {{user.uName}}!
+                    {% endif %}
                     {% if user.accAmount %}
                         <h3>You have <span class="success">{{'${:.2f}'.format(user.accAmount)}}</span> in your account!</h3>
                     {% else %}
